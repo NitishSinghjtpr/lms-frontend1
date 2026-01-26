@@ -53,7 +53,7 @@ function AboutUs() {
           </div>
         </div>
 
-        <div className="carousel w-1/2 m-auto my-16 ">
+        <div className="carousel w-full max-w-2xl mx-auto mt-20 mb-10">
           {celebrities.map((celebritie) => (
             <CarouselSlide
               key={celebritie.slideNumber}

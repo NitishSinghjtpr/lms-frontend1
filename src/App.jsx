@@ -1,19 +1,24 @@
 import HomeLayout from './layout/HomeLayout';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import {  Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import AboutUs from './pages/AboutUs';
+import Footer from './components/Footer';
+import NotFound from './pages/NotFound';
 
 function App() {
   return (
-    <BrowserRouter>
-      
+  
+    <>
+      {/* <Footer/> */}
         <Routes>
           <Route path='/' element={<HomePage />} />
           <Route path='/about' element={<AboutUs/>} />
+          <Route path='*' element={<NotFound/>}/>
 
         </Routes>
+        </>
      
-    </BrowserRouter>
+  
   );
 }
 

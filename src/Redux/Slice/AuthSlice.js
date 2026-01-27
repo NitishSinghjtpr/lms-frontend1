@@ -52,18 +52,48 @@ export const login = createAsyncThunk("/auth/login", async (data) => {
   }
 });
 
+//logout
+//logout
+export const logout = createAsyncThunk("/auth/logout", async () => {
+  try {
+    const res = axiosInstance.get("user/logout");
+
+    toast.promise(res, {
+      loading: "Wait! logout in progress...",
+      success: (data) => data?.data?.message,
+      error: "failed to logout"
+    });
+
+    // 👉 बस यह लाइन जोड़नी है
+    return (await res).data;
+
+  } catch (error) {
+    toast.error(error?.response?.message);
+    throw error;
+  }
+});
+
+
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {},
   extraReducers:(builder)=>{
-    builder.addCase(login.fulfilled,(state,action)=>{
+    builder
+    .addCase(login.fulfilled,(state,action)=>{
       localStorage.setItem("data",JSON.stringify(action?.payload?.user));
       localStorage.setItem("isLoggedIn",true);
       localStorage.setItem("role",action?.payload?.user);
       state.isLoggedIn=true;
       state.data=action?.payload?.user;
       state.role=action?.payload?.user;
+    })
+    .addCase(logout.fulfilled,(state)=>{
+      localStorage.clear();
+      state.data={};
+      state.isLoggedIn=false;
+      state.role="";
     })
   }
 });

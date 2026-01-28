@@ -10,7 +10,9 @@ const initialState = {
     : {},
 };
 
+// =========================================
 // CREATE ACCOUNT
+// =========================================
 export const createAccount = createAsyncThunk("/auth/signup", async (data) => {
   try {
     const resPromise = axiosInstance.post("/user/register", data);
@@ -22,13 +24,16 @@ export const createAccount = createAsyncThunk("/auth/signup", async (data) => {
     });
 
     return (await resPromise).data;
+
   } catch (error) {
     toast.error(error?.response?.data?.message);
     throw error;
   }
 });
 
+// =========================================
 // LOGIN
+// =========================================
 export const login = createAsyncThunk("/auth/login", async (data) => {
   try {
     const resPromise = axiosInstance.post("/user/login", data);
@@ -40,15 +45,19 @@ export const login = createAsyncThunk("/auth/login", async (data) => {
     });
 
     return (await resPromise).data;
+
   } catch (error) {
     toast.error(error?.response?.data?.message);
     throw error;
   }
 });
 
+// =========================================
 // LOGOUT
+// =========================================
 export const logout = createAsyncThunk("/auth/logout", async () => {
   try {
+    // ✔ FIXED missing slash
     const resPromise = axiosInstance.get("/user/logout");
 
     toast.promise(resPromise, {
@@ -58,13 +67,16 @@ export const logout = createAsyncThunk("/auth/logout", async () => {
     });
 
     return (await resPromise).data;
+
   } catch (error) {
     toast.error(error?.response?.message);
     throw error;
   }
 });
 
+// =========================================
 // SLICE
+// =========================================
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -74,10 +86,11 @@ const authSlice = createSlice({
 
       // LOGIN SUCCESS
       .addCase(login.fulfilled, (state, action) => {
-        localStorage.setItem("data", JSON.stringify(action?.payload?.user));
-        localStorage.setItem("isLoggedIn", "true");
+       localStorage.setItem("role", action?.payload?.user?.role.toLowerCase());
+state.role = action?.payload?.user?.role.toLowerCase();
 
-        // FIXED — store correct role (lowercase)
+
+        // 🔥 FIXED — Always save lowercase role
         const userRole = action?.payload?.user?.role?.toLowerCase();
         localStorage.setItem("role", userRole);
 

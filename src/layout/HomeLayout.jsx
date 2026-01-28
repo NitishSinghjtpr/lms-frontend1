@@ -72,9 +72,15 @@ const HomeLayout = ({ children }) => {
             )}
             {isLoggedIn && role === "admin" && (
               <li>
-                <Link to="/course/create">Create course</Link>
+                <Link to="/course/create"> Create New Course</Link>
               </li>
             )}
+
+            {/* {isLoggedIn && role === "admin" && (
+              <li>
+                <Link to="/course/create">Create course</Link>
+              </li>
+            )} */}
 
             <li>
               <Link to="/about">About us</Link>

@@ -24,10 +24,6 @@ const HomeLayout = ({ children }) => {
     changeWidth();
   }
 
-  function handelLogout(e) {
-    e.preventDefault();
-    navigate("/");
-  }
 
   //logout k liye
   async function handleLogout(e){
@@ -74,6 +70,11 @@ const HomeLayout = ({ children }) => {
                 <Link to="/admin/dashboard">Admin Dashboard</Link>
               </li>
             )}
+            {isLoggedIn && role === "admin" && (
+              <li>
+                <Link to="/course/create">Create course</Link>
+              </li>
+            )}
 
             <li>
               <Link to="/about">About us</Link>
@@ -106,7 +107,7 @@ const HomeLayout = ({ children }) => {
             )}
 
             {isLoggedIn && (
-              <li className="bottom-2 w-[60%] mt-4">
+              <li className=" absolute bottom-2 w-[60%] mt-4">
                 <div className="w-full flex items-center gap-4">
                   <Link to="/user/profile">
                     <button className="bg-blue-600 text-white px-4 py-1 font-semibold rounded-md hover:bg-blue-700">

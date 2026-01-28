@@ -10,6 +10,7 @@ import Denied from "./pages/Denied";
 import CourseDescription from "./pages/CourseDescription";
 import RequireAuth from "./components/Auth/RequireAuth";
 import CreateCourse from "./pages/CreateCourse";
+import Profile from "./pages/User/Profile";
 
 function App() {
   return (
@@ -28,6 +29,10 @@ function App() {
         {/* PROTECTED ROUTE NOW FIXED */}
         <Route element={<RequireAuth allowedRoles={["admin"]} />}>
           <Route path="/course/create" element={<CreateCourse />} />
+        </Route>
+
+        <Route element={<RequireAuth allowedRoles={["admin","user"]} />}>
+          <Route path="/user/profile" element={<Profile/>} />
         </Route>
       </Routes>
     </>

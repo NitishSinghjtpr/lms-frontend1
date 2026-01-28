@@ -86,8 +86,9 @@ const authSlice = createSlice({
 
       // LOGIN SUCCESS
       .addCase(login.fulfilled, (state, action) => {
-       localStorage.setItem("role", action?.payload?.user?.role.toLowerCase());
-state.role = action?.payload?.user?.role.toLowerCase();
+      localStorage.setItem("role", action?.payload?.user?.role?.toLowerCase());
+      state.role = action?.payload?.user?.role?.toLowerCase();
+
 
 
         // 🔥 FIXED — Always save lowercase role

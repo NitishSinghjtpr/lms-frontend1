@@ -73,6 +73,8 @@ const Contact = () => {
               name="name"
               placeholder="Enter your name"
               onChange={handleInputChange}
+              value={userInput.name}
+              
             />
           </div>
 
@@ -85,6 +87,7 @@ const Contact = () => {
               type="email"
               name="email"
               placeholder="Enter your email"
+              value={userInput.email}
               onChange={handleInputChange}
             />
           </div>
@@ -97,6 +100,7 @@ const Contact = () => {
               id="message"
               name="message"
               placeholder="Write message"
+              value={userInput.message}
               onChange={handleInputChange}
             />
           </div>

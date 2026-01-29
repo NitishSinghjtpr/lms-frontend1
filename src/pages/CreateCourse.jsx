@@ -72,7 +72,7 @@ function CreateCourse() {
         thumbnail: null,
         previewImage: "",
       });
-      navigate("/courses");
+      navigate("/allcourse");
     }
   }
 

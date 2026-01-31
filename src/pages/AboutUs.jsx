@@ -58,7 +58,8 @@ function AboutUs() {
             <CarouselSlide
               key={celebritie.slideNumber}
               {...celebritie}
-              totalSlideNumber={celebritie.length}
+              totalSlideNumber={celebrities.length}
+
             />
           ))}
         </div>

@@ -1,8 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllCourses } from '../../Redux/Slice/CourseSlice';
+// import { getAllCourses } from '../../Helper/axiosInstance.js';
 import { useEffect } from 'react';
-import HomeLayout from './../../layout/HomeLayout';
-import CourseCard from './CourseCard';
+import HomeLayout from '../../layout/HomeLayout.jsx';
+import CourseCard from './CourseCard.jsx';
+import { getAllCourses } from '../../Redux/Slice/CourseSlice.jsx';
 
 function CourseList() {
     const dispatch = useDispatch();

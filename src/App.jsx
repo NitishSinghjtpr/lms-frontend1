@@ -14,6 +14,7 @@ import Profile from "./pages/User/Profile";
 import EditProfile from './pages/User/EditProfile';
 import Checkout from './pages/payment/Checkout';
 import CheckoutSuccess from './pages/payment/CheckoutSuccess';
+import CheckoutFailure from './pages/payment/CheckoutFailure';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
         {/* PROTECTED ROUTE NOW FIXED */}
         <Route element={<RequireAuth allowedRoles={["admin"]} />}>
           <Route path="/course/create" element={<CreateCourse />} />
+          
         </Route>
 
         <Route element={<RequireAuth allowedRoles={["admin","user"]} />}>
@@ -39,6 +41,7 @@ function App() {
           <Route path="/user/editprofile" element={<EditProfile/>} />
           <Route path="/checkout" element={<Checkout/>} />
           <Route path="/checkout/success" element={<CheckoutSuccess/>} />
+          <Route path="/checkout/fail" element={<CheckoutFailure/>} />
 
         </Route>
       </Routes>

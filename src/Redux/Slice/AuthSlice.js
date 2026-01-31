@@ -70,14 +70,16 @@ export const logout = createAsyncThunk("/auth/logout", async () => {
   }
 });
 
-// ================= UPDATE PROFILE (FIXED API PATH) =================
+// ================= UPDATE PROFILE =================
 export const updateProfile = createAsyncThunk(
   "/user/update/profile",
   async ({ id, formData }) => {
     try {
-      const resPromise = axiosInstance.put(`/user/update/profile/${id}`, formData, {
-        headers: { "Content-Type": "multipart/form-data" }
-      });
+      const resPromise = axiosInstance.put(
+        `/user/update/profile/${id}`,
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } },
+      );
 
       toast.promise(resPromise, {
         loading: "Wait! profile update in progress...",
@@ -86,20 +88,18 @@ export const updateProfile = createAsyncThunk(
       });
 
       return (await resPromise).data;
-
     } catch (error) {
       toast.error(error?.response?.data?.message);
       throw error;
     }
-  }
+  },
 );
 
-
-// ================= GET PROFILE =================
+// ================= GET PROFILE (FIXED) =================
 export const getUserData = createAsyncThunk("/user/details", async () => {
   try {
     const res = axiosInstance.get("/user/profile");
-    return (await res).data;
+    return (await res).data; // backend returns { success, data }
   } catch (error) {
     toast.error(error.message);
   }
@@ -114,15 +114,15 @@ const authSlice = createSlice({
     builder
 
       .addCase(login.fulfilled, (state, action) => {
-        localStorage.setItem("data", JSON.stringify(action?.payload?.user));
-        localStorage.setItem("isLoggedIn", "true");
+        const userData = action?.payload?.user; // login returns { user }
 
-        const userRole = action?.payload?.user?.role?.toLowerCase();
-        localStorage.setItem("role", userRole);
+        localStorage.setItem("data", JSON.stringify(userData));
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("role", userData?.role?.toLowerCase());
 
         state.isLoggedIn = true;
-        state.data = action?.payload?.user;
-        state.role = userRole;
+        state.data = userData;
+        state.role = userData?.role?.toLowerCase();
       })
 
       .addCase(logout.fulfilled, (state) => {
@@ -132,14 +132,15 @@ const authSlice = createSlice({
         state.role = "";
       })
 
+      // ⭐ FIXED BLOCK — subscription update karega
       .addCase(getUserData.fulfilled, (state, action) => {
-        localStorage.setItem("data", JSON.stringify(action?.payload?.user));
-        localStorage.setItem("role", action?.payload?.user?.role);
+        localStorage.setItem("data", JSON.stringify(action?.payload?.data));
+        localStorage.setItem("role", action?.payload?.data?.role);
         localStorage.setItem("isLoggedIn", "true");
 
         state.isLoggedIn = true;
-        state.data = action?.payload?.user;
-        state.role = action?.payload?.user?.role;
+        state.data = action?.payload?.data;
+        state.role = action?.payload?.data?.role;
       });
   },
 });

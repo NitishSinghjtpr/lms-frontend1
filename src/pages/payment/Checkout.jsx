@@ -49,14 +49,19 @@ function Checkout() {
       handler: async function (response) {
         paymentDetails.razorpay_payment_id = response.razorpay_payment_id;
         paymentDetails.razorpay_signature = response.razorpay_signature;
-        paymentDetails.razorpay_subscription_id = subscription_id; // ✔ CORRECT
+
+        // Razorpay does NOT return subscription_id, so use redux store one
+        paymentDetails.razorpay_subscription_id = subscription_id;
 
         toast.success("Payment successfull");
 
-        await dispatch(verifyUserPayment(paymentDetails));
-        isPaymentVerified
-          ? navigate("/checkout/success")
-          : navigate("/checkout/fail");
+        const result = await dispatch(verifyUserPayment(paymentDetails));
+
+        if (result?.payload?.success) {
+          navigate("/checkout/success");
+        } else {
+          navigate("/checkout/fail");
+        }
       },
     };
 

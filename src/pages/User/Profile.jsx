@@ -1,22 +1,35 @@
 import { useDispatch, useSelector } from "react-redux";
 import HomeLayout from "../../layout/HomeLayout";
 import { Link, useNavigate } from "react-router-dom";
+import { cancleCourseBundle } from "../../Redux/Slice/RazorpaySlice";
+import { getUserData } from './../../Redux/Slice/AuthSlice';
+import toast from "react-hot-toast";
 
 function Profile() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const userData = useSelector((state) => state?.auth?.data);
-  console.log("USER DATA → ", userData);
+
+  async function handleCancellation() {
+    toast.loading("Initiating cancellation...");
+
+    // FIX 1 → Correct redux function call
+    await dispatch(cancleCourseBundle());
+    await dispatch(getUserData()); 
+
+    toast.dismiss();
+    toast.success("Cancellation completed!");
+
+    // FIX 2 → correct redirect
+    navigate("/");
+  }
 
   return (
     <HomeLayout>
-
-
-      
-
       <div className="min-h-[90vh] flex items-center justify-center">
         <div className="my-10 flex flex-col rounded-lg p-4 text-white w-96 shadow-[0_0_10px_black]">
+
           {/* USER IMAGE */}
           <img
             src={userData?.avatar?.secure_url}
@@ -62,15 +75,22 @@ function Profile() {
             </Link>
           </div>
 
+          {/* Subscribe Button */}
           {userData?.subscription?.status?.toLowerCase() !== "active" && (
-            <button onClick={()=>navigate("/checkout")} className="w-full mt-3 bg-red-600 hover:bg-red-500 rounded-sm py-2">
-               Subscripbe
+            <button
+              onClick={() => navigate("/checkout")}
+              className="w-full mt-3 bg-red-600 hover:bg-red-500 rounded-sm py-2"
+            >
+              Subscribe
             </button>
           )}
 
-          {/* CANCEL SUBSCRIPTION BUTTON — only for ACTIVE users */}
+          {/* Cancel Subscription btn (only if ACTIVE) */}
           {userData?.subscription?.status?.toLowerCase() === "active" && (
-            <button className="w-full mt-3 bg-red-600 hover:bg-red-500 rounded-sm py-2">
+            <button
+              onClick={handleCancellation}
+              className="w-full mt-3 bg-red-600 hover:bg-red-500 rounded-sm py-2"
+            >
               Cancel Subscription
             </button>
           )}

@@ -13,15 +13,17 @@ export const getCourseLectures = createAsyncThunk(
   "/course/lecture/get",
   async (cid) => {
     try {
-      const response = await axiosInstance.get(`/courses/${cid}`); // FIX: await added
+      const responsePromise = axiosInstance.get(`/courses/${cid}`);
 
-      toast.promise(response, {
-        loading: "Fetching course lecture",
-        success: "Lecture fetched successfully",
-        error: "Failed to load the lectures",
-      });
+toast.promise(responsePromise, {
+  loading: "Fetching course lecture",
+  success: "Lecture fetched successfully",
+  error: "Failed to load the lectures",
+});
 
-      return (await response).data;
+const response = await responsePromise;
+return response.data;
+
 
     } catch (error) {
       toast.error(error?.response?.data?.message);

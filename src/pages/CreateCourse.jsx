@@ -5,7 +5,7 @@ import { useNavigate } from "react-router";
 import HomeLayout from "../layout/HomeLayout";
 import { Link } from "react-router-dom";
 import { AiOutlineArrowLeft } from "react-icons/ai";
-import { createNewCourse } from "../Redux/Slice/CourseSlice";   // ✅ FIX 1 (missing import)
+import { createNewCourse } from "../Redux/Slice/CourseSlice.js";   // ✅ FIX 1 (missing import)
 
 function CreateCourse() {
   const dispatch = useDispatch();

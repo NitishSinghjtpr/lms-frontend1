@@ -34,32 +34,32 @@ export const getCourseLectures = createAsyncThunk(
 // Add Course Lecture
 // ================================
 export const addCourseLectures = createAsyncThunk(
-  "/course/lecture/add",
-  async (data) => {
+  "course/addLecture",
+  async ({ courseId, lecture, title, description }, { rejectWithValue }) => {
     try {
       const formData = new FormData();
-      formData.append("lecture", data.lecture);
-      formData.append("title", data.title);
-      formData.append("description", data.description);
+      formData.append("lecture", lecture);       // 🔥 correct key name
+      formData.append("title", title);
+      formData.append("description", description);
 
-      const response = axiosInstance.post(
-        `/courses/${data.courseId}`,
-        formData
+      const response = await axiosInstance.post(
+        `/courses/${courseId}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
 
-      toast.promise(response, {
-        loading: "Adding course lecture",
-        success: "Lecture added successfully",
-        error: "Failed to add the lectures",
-      });
-
-      return (await response).data;
+      return response.data;
 
     } catch (error) {
-      toast.error(error?.response?.data?.message);
+      return rejectWithValue(error.response?.data?.message);
     }
   }
 );
+
 
 // ================================
 // Delete Course Lecture

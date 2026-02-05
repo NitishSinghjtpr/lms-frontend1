@@ -1,11 +1,13 @@
+
+
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-hot-toast';
 import axiosInstance from './../../Helper/axiosInstance';
 
 const initialState = {
-    key: "",                    // ✅ FIXED (kay → key)
+    key: "",
     subscription_id: "",
-    isPaymentVerified: false,   // ✅ FIXED SPELLING
+    isPaymentVerified: false,
     allPayments: {},
     finalMonths: {},
     monthlySalesRecord: []
@@ -19,9 +21,9 @@ export const getRazorpayId = createAsyncThunk("/razorpay/getId", async () => {
         const response = await axiosInstance.get("/payments/razorpay-key");
         return response.data;
     } catch (error) {
-    toast.error(error?.response?.data?.message || "Failed to load data");
-    throw error; 
-}
+        toast.error(error?.response?.data?.message || "Failed to load data");
+        throw error;
+    }
 });
 
 // ===========================
@@ -32,9 +34,9 @@ export const purchaseCourseBundle = createAsyncThunk("/purchaseCourse", async ()
         const response = await axiosInstance.post("/payments/subscribe");
         return response.data;
     } catch (error) {
-    toast.error(error?.response?.data?.message || "Something went wrong!");
-    throw error;
-}
+        toast.error(error?.response?.data?.message || "Something went wrong!");
+        throw error;
+    }
 });
 
 // ===========================
@@ -49,9 +51,9 @@ export const verifyUserPayment = createAsyncThunk("/payments/verify", async (dat
         });
         return response.data;
     } catch (error) {
-    toast.error(error?.response?.data?.message || "Payment failed!");
-    throw error;
-}
+        toast.error(error?.response?.data?.message || "Payment failed!");
+        throw error;
+    }
 });
 
 // ===========================
@@ -105,7 +107,7 @@ const razorpaySlice = createSlice({
         builder
 
             .addCase(getRazorpayId.fulfilled, (state, action) => {
-                state.key = action?.payload?.key;  // 🔥 FIXED
+                state.key = action?.payload?.key;
             })
 
             .addCase(purchaseCourseBundle.fulfilled, (state, action) => {
@@ -114,13 +116,15 @@ const razorpaySlice = createSlice({
 
             .addCase(verifyUserPayment.fulfilled, (state, action) => {
                 toast.success(action?.payload?.message);
-                state.isPaymentVerified = true;   // 🔥 FIXED SPELLING
+                state.isPaymentVerified = true;
             })
 
             .addCase(getPaymentRecord.fulfilled, (state, action) => {
-                state.allPayments = action?.payload?.subscriptions; // 🔥 FIXED
-                state.finalMonths = action?.payload?.finalMonths;
-                state.monthlySalesRecord = action?.payload?.monthlySalesRecord;
+                state.allPayments = action?.payload?.subscriptions || [];
+
+                // 🔥 FIXED: backend does NOT return these fields for /payments route
+                state.finalMonths = {};
+                state.monthlySalesRecord = [];
             });
     }
 });

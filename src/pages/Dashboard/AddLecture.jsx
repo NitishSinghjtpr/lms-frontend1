@@ -83,16 +83,16 @@ function AddLecture() {
             <button
               type="button"
               onClick={() => navigate(-1)}
-              className="btn-secondary px-4 py-2 rounded-md font-semibold"
+              className=" btn btn-secondary hover:btn-secondary px-4 py-2 rounded-md font-semibold"
             >
               Cancel
             </button>
 
             <button
               type="submit"
-              className="btn-primary px-4 py-2 rounded-md font-semibold"
+              className=" bg-green-500 hover:bg-green-600 px-4 py-2 rounded-md font-semibold"
             >
-              Add Lecture
+              Add Lecture 
             </button>
           </div>
         </form>
@@ -102,3 +102,4 @@ function AddLecture() {
 }
 
 export default AddLecture;
+  

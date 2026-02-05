@@ -31,10 +31,8 @@ function Displaylectures() {
   // FETCH LECTURES
   // ===========================
   useEffect(() => {
-    if (!state) {
-      navigate("/courses");
-      return;
-    }
+    if (!state) navigate("/allcourse");
+
 
     dispatch(getCourseLectures(state._id));
   }, [state, navigate, dispatch]);
@@ -42,7 +40,6 @@ function Displaylectures() {
   return (
     <HomeLayout>
       <div className="flex flex-col gap-10 items-center justify-center min-h-[90vh] pt-10 text-white relative">
-        
         {/* COURSE NAME */}
         <div className="text-center text-2xl font-bold text-yellow-500">
           Course Name: {state?.title}
@@ -51,17 +48,13 @@ function Displaylectures() {
         {/* CHECK IF LECTURES AVAILABLE */}
         {lectures && lectures.length > 0 && (
           <div className="flex justify-center gap-10 w-full">
-
             {/* LEFT - VIDEO PLAYER */}
             <div className="space-y-5 w-[28rem] p-2 rounded-lg shadow-[0_0_10px_black]">
               <video
-                src={lectures[currentVideo]?.lecture?.secure_url}
+                src={lectures[currentVideo]?.video?.secure_url}
                 className="object-fill rounded-tl-lg rounded-tr-lg w-full"
                 controls
-                disablePictureInPicture
-                muted
-                controlsList="nodownload"
-              ></video>
+              />
 
               <div>
                 <h1>
@@ -78,7 +71,6 @@ function Displaylectures() {
 
             {/* RIGHT - LECTURE LIST */}
             <ul className="w-[28rem] p-2 rounded-lg text-yellow-500 space-y-4 shadow-[0_0_10px_black]">
-
               {/* HEADER */}
               <li className="font-semibold text-xl flex items-center justify-between">
                 <p>Lecture list</p>
@@ -88,7 +80,7 @@ function Displaylectures() {
                     onClick={() =>
                       navigate("/course/addlecture", { state: { ...state } })
                     }
-                    className="btn-primary px-2 py-1 rounded-md cursor-pointer font-semibold text-sm"
+                    className="px-3 py-1 text-sm font-medium rounded-md bg-green-500 hover:bg-green-600 text-white shadow-md transition-all duration-200"
                   >
                     Add new lecture
                   </button>
@@ -110,10 +102,8 @@ function Displaylectures() {
                     {/* DELETE BUTTON */}
                     {role === "admin" && (
                       <button
-                        onClick={() =>
-                          onLectureDelete(state._id, lecture._id)
-                        }
-                        className="btn-secondary cursor-pointer px-2 py-1 rounded-md font-semibold text-sm"
+                        onClick={() => onLectureDelete(state._id, lecture._id)}
+                        className="px-3 py-1 text-sm font-medium rounded-md bg-red-500 hover:bg-red-600 text-white shadow-md transition-all duration-200"
                       >
                         Delete lecture
                       </button>

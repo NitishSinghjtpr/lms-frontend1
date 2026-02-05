@@ -9,12 +9,9 @@ const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-
   const [loginData, setLoginData] = useState({
-   
     email: "",
     password: "",
-   
   });
 
   // handle input
@@ -26,23 +23,14 @@ const LoginPage = () => {
     });
   }
 
-  
   // submit form
   async function onLogin(event) {
     event.preventDefault();
 
-    if (
-      !loginData.email ||
-      !loginData.password
-    
-    ) {
+    if (!loginData.email || !loginData.password) {
       toast.error("Please fill all the details");
       return;
     }
-
-
-    // dispatch action (TODO)
-    // dispatch(registerUser(formData));
 
     const response = await dispatch(login(loginData));
     if (response?.payload?.success) {
@@ -50,12 +38,9 @@ const LoginPage = () => {
     }
 
     setLoginData({
-     
       email: "",
       password: "",
-    
     });
-
   }
 
   return (
@@ -66,7 +51,7 @@ const LoginPage = () => {
           onSubmit={onLogin}
           className="flex flex-col justify-center gap-3 p-4 text-white w-96 shadow-[0_0_10px_black]"
         >
-          <h1 className="text-center text-2xl font-bold">login Page</h1>
+          <h1 className="text-center text-2xl font-bold">Login Page</h1>
 
           {/* EMAIL */}
           <div className="flex flex-col gap-1">
@@ -102,16 +87,26 @@ const LoginPage = () => {
             />
           </div>
 
+          {/* 👇 NEW — FORGOT PASSWORD LINK */}
+          <p className="text-right -mt-2">
+            <Link
+              to="/forgot-password"
+              className="text-blue-400 hover:text-blue-500 cursor-pointer"
+            >
+              Forgot Password?
+            </Link>
+          </p>
+
           {/* BUTTON */}
           <button
             className="bg-yellow-600 hover:bg-yellow-500 transition-all ease-in-out duration-300 rounded-sm font-semibold py-2 cursor-pointer"
             type="submit"
           >
-            login
+            Login
           </button>
 
           <p className="text-center">
-            Don't have an account ?{" "}
+            Don't have an account?{" "}
             <Link
               to="/signup"
               className="link hover:text-blue-600 text-blue-300 cursor-pointer"
